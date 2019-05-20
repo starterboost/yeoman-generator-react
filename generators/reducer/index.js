@@ -57,7 +57,7 @@ module.exports = class extends CustomGenerator {
 
 		if( createComponent ){
 			//pass on to the component generator
-			await this.composeWith(`starterboost-react:component`, {name:name});
+			await this.composeWith(`starterboost-react:component`, {name:name,reducerName:_.camelCase(name)});
 		}
 
 	}

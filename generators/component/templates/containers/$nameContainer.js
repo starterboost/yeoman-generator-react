@@ -5,7 +5,7 @@ import <%= name %>Component from '../components/<%= name %>Component';
 
 const mapStateToProps = state => {
 	return ({
-		
+		<% if( reducerName ) { %><% if( type == 'items' ) { %>items : state.<%= reducerName %><% }else{ %>data : state.<%= reducerName %><% } %><% } %>
 	});
 }
 

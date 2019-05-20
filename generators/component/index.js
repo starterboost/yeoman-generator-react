@@ -55,7 +55,8 @@ module.exports = class extends CustomGenerator {
 			'name',
 			'type',
 			'enableOnMount',
-			'enableOnUnmount'
+			'enableOnUnmount',
+			'reducerName'
 		] );
 
 		const {name} = options;
