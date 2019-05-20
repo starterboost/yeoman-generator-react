@@ -14,5 +14,8 @@
   },
   "devDependencies": {
     "@starterboost/project-scripts": "starterboost/project-scripts"
+  },
+  "scripts" : {
+    "release" : "project-release"
   }
 }
