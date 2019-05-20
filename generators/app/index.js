@@ -36,7 +36,8 @@ module.exports = class extends CustomGenerator {
 				this.destinationRoot( appDir );
 				await this.config.save();
 				//now copy over the files
-				this.copyTplDir({name});
+				await this.copyTplDir({name});
+				await this.yarnInstall();
 			}
 		}else{
 			const {generator} = await this.prompt([
