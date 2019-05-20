@@ -2,10 +2,10 @@ const path = require('path');
 const _ = require('lodash');
 const fs = require('fs-extra-promise');
 
-const Generator = require('yeoman-generator');
+const CustomGenerator = require('../../utils/CustomGenerator');
 const Promise = require('bluebird');
 
-module.exports = class extends Generator {
+module.exports = class extends CustomGenerator {
 	// The name `constructor` is important here
 	constructor(args, opts) {
 		// Calling the super constructor is important so our generator is correctly set up
@@ -69,15 +69,36 @@ module.exports = class extends Generator {
 				
 				name = `${namePrefix}${name}`;
 				name =  _.capitalize( name ).substring( 0, 1 ) + _.camelCase( name ).substring( 1 );
-				const NAME = _.kebabCase( name ).replace(/\-/,'_').toUpperCase();
+				const NAME = _.kebabCase( name ).replace(/\-/g,'_').toUpperCase();
 				const nameCamelCase = _.camelCase( name );
-				console.log( name, NAME, nameCamelCase );
 				
-				
+				const options = {name,NAME,nameCamelCase,exportDefinition};
+
 				switch( type ){
 					case 'action-reducer':
+						//reads the templates and then injects them into the target file - with the variables specified
+						await this._injectTpls([
+							'actions/define_action_type.js',
+							'actions/action_reducer.js'
+						], `redux/actions/${action}Action.js`,
+							options 
+						);
+						
+						await this._injectTpls([
+							'reducers/import_action_type.js',
+							'reducers/reducer.js'
+						], `redux/reducers/${action}Reducer.js`,
+							options
+						);
+
 					break;
 					case 'action':
+						await this._injectTpls([
+							'actions/action.js'
+						], `redux/actions/${action}Action.js`,
+							options
+						);
+						
 					break;
 				}
 

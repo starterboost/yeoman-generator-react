@@ -2,10 +2,10 @@ const path = require('path');
 const _ = require('lodash');
 const fs = require('fs-extra-promise');
 
-const Generator = require('yeoman-generator');
+const CustomGenerator = require('../../utils/CustomGenerator');
 const Promise = require('bluebird');
 
-module.exports = class extends Generator {
+module.exports = class extends CustomGenerator {
 	// The name `constructor` is important here
 	constructor(args, opts) {
 		// Calling the super constructor is important so our generator is correctly set up

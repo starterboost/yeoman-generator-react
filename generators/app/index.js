@@ -2,10 +2,10 @@ const path = require('path');
 const _ = require('lodash');
 const fs = require('fs-extra-promise');
 
-const Generator = require('yeoman-generator');
+const CustomGenerator = require('../../utils/CustomGenerator');
 const Promise = require('bluebird');
 
-module.exports = class extends Generator {
+module.exports = class extends CustomGenerator {
 	// The name `constructor` is important here
 	constructor(args, opts) {
 		// Calling the super constructor is important so our generator is correctly set up
@@ -26,13 +26,17 @@ module.exports = class extends Generator {
 			//variables we'll use next
 			const {name} = answers;
 			const appDir = path.resolve( this.destinationRoot(), name );
+			const exists = fs.existsAsync( appDir );
 			//confirm the app doesn't exist already
-			if( this.fs.exists( appDir ) ){
+			if( exists ){
 				this.log(`App '${name}' already exists`);
 			}else{
 				await fs.mkdirAsync( appDir );
+				//reset the destination root
 				this.destinationRoot( appDir );
-				this.config.save();
+				await this.config.save();
+				//now copy over the files
+				this.copyTplDir({name});
 			}
 		}else{
 			const {generator} = await this.prompt([
