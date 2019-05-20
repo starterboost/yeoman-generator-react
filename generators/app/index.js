@@ -26,7 +26,7 @@ module.exports = class extends CustomGenerator {
 			//variables we'll use next
 			const {name} = answers;
 			const appDir = path.resolve( this.destinationRoot(), name );
-			const exists = fs.existsAsync( appDir );
+			const exists = await fs.existsAsync( appDir );
 			//confirm the app doesn't exist already
 			if( exists ){
 				this.log(`App '${name}' already exists`);
@@ -61,8 +61,8 @@ module.exports = class extends CustomGenerator {
 				}
 			]);
 
-			this.composeWith(`starterboost-react:${generator}`, {
-			});
+			//call the generator that was requested
+			this.composeWith(`starterboost-react:${generator}`, {});
 
 		}
 

@@ -53,14 +53,38 @@ module.exports = class extends Generator {
 			options = target;
 			target = null;
 		}
+
+		source = source || '';
+		target = target || '';
+
 		//get the root of the target directory
 		const pathToSource = this.templatePath( source || '' );
 		const pathToTarget = this.destinationPath( target || '' );
 		//read the source
 		await fs.readdirAsync( pathToSource )
-		.then( files => Promise.mapSeries( files, fs.statAsync ) )
-		.then( files => {
-			_.each( files, this.log )
+		//.then( files => Promise.mapSeries( files, file => fs.statAsync( path.resolve( pathToSource, file ) ) ) )
+		.then( (files) => {
+			return Promise.mapSeries( files, async (file) => {
+				const pathToFile = this.templatePath( path.join( pathToSource, file ) );
+				//console.log( path.join( source, file ), pathToFile );
+				const isDirectory = await fs.isDirectoryAsync( pathToFile );
+
+				if( isDirectory ){
+					//call recursively
+					return this.copyTplDir( 
+						path.join( source, file ), 
+						path.join( target, file ), 
+						options 
+					);
+				}else{
+					//copy the file across
+					return this.fs.copyTpl(
+						this.templatePath( path.join( pathToSource, file ) ),
+						this.destinationPath( path.join( pathToTarget, file ) ),
+						options
+					);
+				}
+			} );
 		} )
 	}
 }
