@@ -39,13 +39,13 @@ module.exports = class extends CustomGenerator {
 				type: "confirm",
 				name: "enableOnMount",
 				message: "Enable onMount",
-				default: true
+				default: false
 			},
 			{
 				type: "confirm",
 				name: "enableOnUnmount",
 				message: "Enable onUnmount",
-				default: true
+				default: false
 			}
 		]) );
 

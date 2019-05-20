@@ -31,16 +31,34 @@ module.exports = class extends CustomGenerator {
 
 		const {name} = options;
 
+		//copy the actions over
 		await this.fs.copyTpl(
 			this.templatePath('actions/$nameAction.js'),
 			this.destinationPath(`src/redux/actions/${name}Action.js`),
 			options
 		);
 		
+		//copy the reducers over
 		await this.fs.copyTpl(
 			this.templatePath('reducers/$nameReducer.js'),
 			this.destinationPath(`src/redux/reducers/${name}Reducer.js`),
 			options
 		);
+
+		//ask if they want a component creating with the same options
+		const {createComponent} = await this.prompt( [
+			{
+				type: "confirm",
+				name: "createComponent",
+				message: `Create Container/Component called '${name}'`,
+				default: name
+			}
+		] );
+
+		if( createComponent ){
+			//pass on to the component generator
+			await this.composeWith(`starterboost-react:component`, {name});
+		}
+
 	}
 }
