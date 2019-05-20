@@ -33,13 +33,13 @@ module.exports = class extends CustomGenerator {
 
 		await this.fs.copyTpl(
 			this.templatePath('actions/$nameAction.js'),
-			this.destinationPath(`redux/actions/${name}Action.js`),
+			this.destinationPath(`src/redux/actions/${name}Action.js`),
 			options
 		);
 		
 		await this.fs.copyTpl(
 			this.templatePath('reducers/$nameReducer.js'),
-			this.destinationPath(`redux/reducers/${name}Reducer.js`),
+			this.destinationPath(`src/redux/reducers/${name}Reducer.js`),
 			options
 		);
 	}

@@ -60,19 +60,19 @@ module.exports = class extends CustomGenerator {
 
 		await this.fs.copyTpl(
 			this.templatePath('containers/$nameContainer.js'),
-			this.destinationPath(`containers/${name}Container.js`),
+			this.destinationPath(`src/containers/${name}Container.js`),
 			options
 		);
 		
 		await this.fs.copyTpl(
 			this.templatePath('components/$nameComponent.js'),
-			this.destinationPath(`components/${name}Component.js`),
+			this.destinationPath(`src/components/${name}Component.js`),
 			options
 		);
 
 		await this.fs.copyTpl(
 			this.templatePath('components/styles/$nameComponent.module.scss'),
-			this.destinationPath(`components/styles/${name}Component.module.scss`),
+			this.destinationPath(`src/components/styles/${name}Component.module.scss`),
 			options
 		);
 	}

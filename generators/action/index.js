@@ -14,11 +14,11 @@ module.exports = class extends CustomGenerator {
 
 	async prompting() {
 		//get a list of generators available
-		const dirActions = this.destinationPath(`redux/actions`);
+		const dirActions = this.destinationPath(`src/redux/actions`);
 		const exists = await fs.existsAsync( dirActions );
 
 		if( !exists ){
-			console.log('Could not find the required directory "redux/actions"...');
+			console.log('Could not find the required directory "src/redux/actions"...');
 		}else{
 			//list the actions that already exist
 			const actions = await fs.readdirAsync( dirActions ).then( actions => {
@@ -80,14 +80,14 @@ module.exports = class extends CustomGenerator {
 						await this._injectTpls([
 							'actions/define_action_type.js',
 							'actions/action_reducer.js'
-						], `redux/actions/${action}Action.js`,
+						], `src/redux/actions/${action}Action.js`,
 							options 
 						);
 						
 						await this._injectTpls([
 							'reducers/import_action_type.js',
 							'reducers/reducer.js'
-						], `redux/reducers/${action}Reducer.js`,
+						], `src/redux/reducers/${action}Reducer.js`,
 							options
 						);
 
@@ -95,7 +95,7 @@ module.exports = class extends CustomGenerator {
 					case 'action':
 						await this._injectTpls([
 							'actions/action.js'
-						], `redux/actions/${action}Action.js`,
+						], `src/redux/actions/${action}Action.js`,
 							options
 						);
 						
