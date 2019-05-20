@@ -17,7 +17,9 @@ module.exports = class extends CustomGenerator {
 		// Calling the super constructor is important so our generator is correctly set up
 		super(args, opts);
 
-		this.option('name');
+		//define the options that can be called from the command line
+		//the type is important - DO NOT remove or it will cast to Boolean
+		this.option('name',{type:String});
 	}
 
 	async prompting() {

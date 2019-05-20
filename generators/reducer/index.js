@@ -11,7 +11,7 @@ module.exports = class extends CustomGenerator {
 		// Calling the super constructor is important so our generator is correctly set up
 		super(args, opts);
 
-		this.option('name');
+		this.option('name', {type:String});
 	}
 
 	async prompting() {
@@ -57,7 +57,7 @@ module.exports = class extends CustomGenerator {
 
 		if( createComponent ){
 			//pass on to the component generator
-			await this.composeWith(`starterboost-react:component`, {name});
+			await this.composeWith(`starterboost-react:component`, {name:name});
 		}
 
 	}
