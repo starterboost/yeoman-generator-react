@@ -11,5 +11,8 @@
     "bluebird": "^3.5.4",
     "fs-extra-promise": "^1.0.1",
     "yeoman-generator": "^4.0.0"
+  },
+  "devDependencies": {
+    "@starterboost/project-scripts": "starterboost/project-scripts"
   }
 }
