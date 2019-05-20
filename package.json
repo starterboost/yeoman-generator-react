@@ -1,7 +1,7 @@
 {
   "name": "generator-starterboost-react",
   "description": "StarterBoost flavour of React App",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "license": "MIT",
   "files": [
@@ -15,7 +15,7 @@
   "devDependencies": {
     "@starterboost/project-scripts": "starterboost/project-scripts"
   },
-  "scripts" : {
-    "release" : "project-release"
+  "scripts": {
+    "release": "project-release"
   }
 }
