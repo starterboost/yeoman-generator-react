@@ -8,11 +8,9 @@ import {
 	CreateReducer, AddItem, UpdateItem, RemoveItem
 } from '../utils/ReducerUtil';
 
-/*START:INIT_STATE*/
 const INITIAL_STATE = {
 	
 };
-/*END:INIT_STATE*/
 
 const reducer = CreateReducer( INITIAL_STATE, {
 	/*INJECT:REDUCER*/
