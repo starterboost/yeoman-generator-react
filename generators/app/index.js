@@ -31,12 +31,25 @@ module.exports = class extends CustomGenerator {
 			if( exists ){
 				this.log(`App '${name}' already exists`);
 			}else{
+				const {username,password} = await this.prompt([
+					{
+						type: "input",
+						name: "username",
+						message: "Authentication username"
+					},
+					{
+						type: "input",
+						name: "password",
+						message: "Authentication password"
+					}
+				]);
+
 				await fs.mkdirAsync( appDir );
 				//reset the destination root
 				this.destinationRoot( appDir );
 				await this.config.save();
 				//now copy over the files
-				await this.copyTplDir({name});
+				await this.copyTplDir({name,username,password});
 			}
 		}else{
 			const {generator} = await this.prompt([

@@ -5,8 +5,7 @@ const configureServer = ( options ) => {
 	//stop being created multiple times - if big issue developer has to do a hard refresh
 	if( app ) return app;
 	
-	console.log('creating new app');
-	const {REACT_APP_SERVER_URL,REACT_APP_USERNAME,REACT_APP_PASSWORD} = options;
+	const {REACT_APP_SERVER_URL,REACT_APP_USERNAME,REACT_APP_PASSWORD,REACT_APP_NAME} = options;
 	//start up the feathersjs app
 	// Socket.io is exposed as the `io` global.
 	var socket = io(REACT_APP_SERVER_URL);
@@ -14,8 +13,10 @@ const configureServer = ( options ) => {
 	app = feathers();
 
 	app.configure(feathers.socketio(socket));
-	app.configure(feathers.authentication({storage:localStorage}));
-
+	app.configure(feathers.authentication({
+		storage: localStorage,
+		storageKey: `${REACT_APP_NAME||'feathers'}-jwt`
+	}));
 	const authenticate = () => {
 		return app.authenticate()
 		.catch( err => {
