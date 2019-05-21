@@ -70,6 +70,10 @@ module.exports = class extends CustomGenerator {
 							name: "Action Type",
 							value : 'action'
 						},
+						{
+							name: "Route/Path",
+							value : 'route'
+						},
 					]
 				}
 			]);

@@ -1,1 +1,1 @@
-import <%= ComponentName %> from '<%= ComponentPath =>';
+<% if( component ) { %>import <%= component %> from '../containers/<%= component %>'; <% } %>

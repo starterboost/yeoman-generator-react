@@ -1,1 +1,1 @@
-export const PATH_<%= NAME %> = "<%= route %>";
+export const <%= NAME %> = "<%= routePath %>";

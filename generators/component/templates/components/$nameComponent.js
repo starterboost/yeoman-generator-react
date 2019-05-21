@@ -36,7 +36,7 @@ class <%= name %>Component extends Component{
 	render(props){
 		var {<% if( type ) { %><%= type %>,<% } %>className} = this.props;
 		return (<div className={ClassNames(Styles.container,className)}>
-			
+			<h1><%= name %></h1>
 		</div>)
 	}
 }
