@@ -96,7 +96,7 @@ module.exports = class extends CustomGenerator {
 				
 				var {exportDefinition} = await this.prompt([
 					{
-						message: `Export definition '${NAME}'...`,
+						message: `Export definition '${nameCamelCase}'...`,
 						type: "confirm",
 						name: "exportDefinition",
 						default: true

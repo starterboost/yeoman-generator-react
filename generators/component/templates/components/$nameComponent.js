@@ -34,7 +34,7 @@ class <%= name %>Component extends Component{
 	 * @returns {JSXElement}
 	 */
 	render(props){
-		var {<% if( type ) { %><%= type %>,<% } %>className} = this.props;
+		var {className} = this.props;
 		return (<div className={ClassNames(Styles.container,className)}>
 			<h1><%= name %></h1>
 		</div>)
@@ -43,8 +43,6 @@ class <%= name %>Component extends Component{
 
 <%= name %>Component.propTypes = {
 	className : PropTypes.string,
-	<% if( type == 'data' ) { %>data : PropTypes.object.isRequired,<% } %>
-	<% if( type == 'items' ) { %>items : PropTypes.array.isRequired,<% } %>
 	<% if( enableOnMount ) { %>onMount: PropTypes.func.isRequired,<% } %>
 	<% if( enableOnUnmount ) { %>onUnmount: PropTypes.func.isRequired,<% } %>
 }

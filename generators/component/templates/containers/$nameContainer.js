@@ -9,7 +9,7 @@ import {} from '../redux/actions/<%= name %>Action';
 
 const mapStateToProps = state => {
 	return ({
-		<% if( type == 'items' || type == 'data' ) { %><%= type %>: state.<%= reducerName %> <% } %>
+		
 	});
 }
 

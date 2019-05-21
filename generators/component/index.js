@@ -5,11 +5,6 @@ const fs = require('fs-extra-promise');
 const CustomGenerator = require('../../utils/CustomGenerator');
 const Promise = require('bluebird');
 
-const COMPONENT_TYPES = [
-	{id:'data',value:'data',name:'data={Object}'},
-	{id:'items',value:'items',name:'items={Array}'},
-	{id:'other',value:false,name:'...other'}
-]
 
 module.exports = class extends CustomGenerator {
 	// The name `constructor` is important here
@@ -30,12 +25,6 @@ module.exports = class extends CustomGenerator {
 				name: "name",
 				message: "Your component name",
 				default: this.options.name
-			},
-			!_.find( COMPONENT_TYPES, {id:this.options.type} ) && {
-				type: "list",
-				name: "type",
-				message: "Component type",
-				choices: COMPONENT_TYPES
 			},
 			{
 				type: "confirm",
@@ -58,7 +47,6 @@ module.exports = class extends CustomGenerator {
 			answers, 
 			this.options ), [
 			'name',
-			'type',
 			'enableOnMount',
 			'enableOnUnmount',
 			'reducerName'
