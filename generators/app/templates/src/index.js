@@ -24,6 +24,9 @@ const store = configureStore({
 	}
 });
 
+console.log('loaded app '+Date.now());
+
+const rootEl = document.getElementById('root');
 const render = Component => {
 	return ReactDOM.render(
 		<Provider store={store}>
@@ -33,11 +36,18 @@ const render = Component => {
 				</Router>
       </ConnectedRouter>
     </Provider>,
-    document.getElementById('root')
+    rootEl
 	);
 };
 
 render( App );
+
+if (module.hot) {
+	module.hot.accept('./containers/AppContainer', () => {
+		const NextApp = require('./containers/AppContainer').default
+		render( NextApp );
+	})
+}
 
 serviceWorker.unregister();
 

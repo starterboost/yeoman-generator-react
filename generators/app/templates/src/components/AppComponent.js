@@ -3,11 +3,7 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
-import util from 'util';
 import _ from 'lodash';
-
-import { hot } from 'react-hot-loader';
-import {ClassNames} from '@starterboost/react-utilities/styles';
 
 import Styles from './styles/AppComponent.module.scss';
 
@@ -62,3 +58,4 @@ App.propTypes = {
 export default App;
 
 export { App, Styles as AppStyles };
+

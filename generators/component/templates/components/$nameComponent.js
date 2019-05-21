@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import { hot } from 'react-hot-loader';
+import {ClassNames} from '@starterboost/react-utilities/styles';
 
 import Styles from './styles/<%= name %>Component.module.scss';
-
 
 class <%= name %>Component extends Component{
 	
@@ -54,5 +53,5 @@ class <%= name %>Component extends Component{
 
 }
 
-export default hot(module)(<%= name %>Component);
+export default <%= name %>Component;
 export { <%= name %>Component,Styles as <%= name %>Styles };

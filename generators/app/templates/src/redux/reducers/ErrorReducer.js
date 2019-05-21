@@ -5,7 +5,7 @@ import {
 
 import {
 	CreateReducer
-} from '../utils';
+} from '../utils/ReducerUtil';
 
 /*START:INIT_STATE*/
 const INITIAL_STATE = {message:null};

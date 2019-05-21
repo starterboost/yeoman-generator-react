@@ -51,7 +51,12 @@ module.exports = class extends CustomGenerator {
 			}
 		]) );
 
-		const options = _.pick( _.merge( answers, this.options ), [
+		const options = _.pick( 
+			_.merge( {
+				reducerName:false
+			}, 
+			answers, 
+			this.options ), [
 			'name',
 			'type',
 			'enableOnMount',
