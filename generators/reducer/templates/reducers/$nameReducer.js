@@ -1,5 +1,3 @@
-import util from 'util';
-
 import {
 	/*INJECT:IMPORT_ACTION_TYPE*/
 } from '../actions/<%= name %>Action';
