@@ -1,7 +1,7 @@
 import {
 	/*INJECT:IMPORT_ACTION_TYPE*/
 	ERROR_SHOW, ERROR_HIDE,
-} from '../actions/ErrorActions';
+} from '../actions/ErrorAction';
 
 import {
 	CreateReducer

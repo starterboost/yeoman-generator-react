@@ -6,29 +6,29 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
-import reducer from '../redux'; // aka this is your rootReducer
+import createReducer from '../redux'; // aka this is your rootReducer
+import { routerMiddleware } from 'connected-react-router';
 
 const reduxDevTools =
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
 
 const configureStore = ( options = {} ) => {
+	const history = options.history;
+	//ensure we get a history object
+	console.assert( history, 'History reference expected' );
+	//create the reducer
+	const reducer = createReducer( history );
 	//create the store
 	const store = createStore(
 		reducer, 
 		compose(
-			applyMiddleware(thunk.withExtraArgument( options.extraArg || {} )),
+			applyMiddleware(
+				routerMiddleware( history ),
+				thunk.withExtraArgument( options.extraArg || {} )
+			),
 			reduxDevTools,
 		)
 	);
-
-	if (process.env.NODE_ENV !== 'production') {
-		if (module.hot) {
-		module.hot.accept('../redux', () => {
-			store.replaceReducer(reducer);
-		});
-		}
-	}
-
 	return store;
 };
 

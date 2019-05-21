@@ -3,9 +3,13 @@ import { connect } from 'react-redux';
 
 import <%= name %>Component from '../components/<%= name %>Component';
 
+<% if( reducerName ) { %>
+import {} from '../redux/actions/<%= name %>Action';
+<% } %>
+
 const mapStateToProps = state => {
 	return ({
-		<% if( reducerName ) { %><% if( type == 'items' ) { %>items : state.<%= reducerName %><% }else{ %>data : state.<%= reducerName %><% } %><% } %>
+		<% if( reducerName ) { %><% if( type == 'items' ) { %>items : state.<%= reducerName %>.items<% }else{ %>data : state.<%= reducerName %><% } %><% } %>
 	});
 }
 

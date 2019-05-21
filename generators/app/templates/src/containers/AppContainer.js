@@ -2,19 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import AppComponent from '../components/AppComponent';
-
-import {test} from '../redux/actions/ErrorActions';
-
+import { navigateTo } from '../redux/actions/RouterAction';
 
 const mapStateToProps = state => {
 	return ({
-		errors: state.error
+		errors: state.error,
+		router : state.router
 	});
 }
 
 const mapDispatchToProps = dispatch => ({
 	onMount : () => {
-		dispatch( test() )
+
+	},
+	onNavigateTo : ( routePath ) => {
+		dispatch( navigateTo( routePath ) );
 	}
 });
 

@@ -1,20 +1,64 @@
-import React, {Component} from 'react';
+/*eslint-env es6*/
+import React, { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
+
+import PropTypes from 'prop-types';
+import util from 'util';
+import _ from 'lodash';
+
+import { hot } from 'react-hot-loader';
+import {ClassNames} from '@starterboost/react-utilities/styles';
+
 import Styles from './styles/AppComponent.module.scss';
 
-class App extends Component{
-  componentDidMount(){
-    this.props.onMount();
-  }
+import {
+	PATH_ROOT,
+	/*<INJECT:IMPORT_ROUTE_PATH*/
+} from '../constants/PathConstants';
 
-  render(){
-    return (
-      <div className={Styles.container}>
-        <header className={Styles.content}>
-          <h1>Demo7</h1>
-        </header>
-      </div>
-    );
-  }
+import ButtonComponent from './ButtonComponent';
+/*<INJECT:IMPORT_COMPONENT*/
+
+class App extends Component {
+	
+	onNavigateTo = ( evt, props ) => {
+		this.props.onNavigateTo( props['data-route-path'] );
+	}
+	
+	/**
+	 * @memberOf App
+	 * @function render
+	 * @returns {JSXElement}
+	 */
+	render() {
+		const {router} = this.props;
+		const {location} = router;
+		return (
+			<div className={Styles.container}>
+				<ul className={Styles.menu}>
+					{_.map([
+						{name:"Home",path:PATH_ROOT},
+						/*<INJECT:CONFIG_MENU*/	
+					],(route, index) => {
+						return <li key={index}><ButtonComponent onClick={this.onNavigateTo} content={route.name} data-route-path={route.path} /></li>
+					})}
+				</ul>
+				<Switch location={location}>
+					<Route exact path={PATH_ROOT} render={() => {
+						return <h1>App</h1>
+					}} />
+					{/*<INJECT:CONFIG_ROUTE*/}
+					<Route render={() => this.props.onNavigateTo( PATH_ROOT ) } />
+				</Switch>
+			</div>
+		);
+	}
+}
+
+App.propTypes = {
+	onNavigateTo : PropTypes.func.isRequired
 }
 
 export default App;
+
+export { App, Styles as AppStyles };

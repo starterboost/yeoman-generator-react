@@ -1,11 +1,13 @@
 
 import _ from 'lodash';
 import { combineReducers } from 'redux';
+import { connectRouter } from 'connected-react-router'
 //iterate all the files
 
 const REGEXP_REDUCER = /^\.\/reducers\/([a-zA-Z]+)Reducer$/;
 function importAll (requireContext) {
-  const output = {};
+  const output = {
+  };
 	requireContext.keys().forEach(key => {
 		if( REGEXP_REDUCER.test(key) ){
       const reducerId = REGEXP_REDUCER.exec(key)[1]
@@ -19,9 +21,20 @@ function importAll (requireContext) {
   return output;
 }
 
-export default combineReducers(
-  //dynamically finds all the reducers
-  importAll(require.context('./', true))
-);
+export const createReducer = ( history ) => {
+  const reducer = combineReducers(
+    //dynamically finds all the reducers
+    _.merge( 
+      {
+        router : connectRouter( history )
+      }, 
+      importAll(require.context('./', true)) 
+    )
+  );
+
+  return reducer;
+}
+
+export default createReducer;
 
 

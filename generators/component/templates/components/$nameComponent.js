@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { hot } from 'react-hot-loader';
 
-import Styles from './css/<%= name %>Component.styl';
+import Styles from './styles/<%= name %>Component.module.scss';
 
 
 class <%= name %>Component extends Component{

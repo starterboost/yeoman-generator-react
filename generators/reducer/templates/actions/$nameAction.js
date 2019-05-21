@@ -1,4 +1,4 @@
-import {showError,catchError} from './ErrorActions';
+import {showError,catchError} from './ErrorAction';
 
 /*INJECT:DEFINE_ACTION_TYPE*/
 
