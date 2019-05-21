@@ -9,11 +9,11 @@ import Styles from './styles/AppComponent.module.scss';
 
 import {
 	PATH_ROOT,
-	/*<INJECT:IMPORT_ROUTE_PATH*/
+	/*INJECT:IMPORT_ROUTE_PATH*/
 } from '../constants/PathConstants';
 
 import ButtonComponent from './ButtonComponent';
-/*<INJECT:IMPORT_COMPONENT*/
+/*INJECT:IMPORT_COMPONENT*/
 
 class App extends Component {
 	
@@ -34,7 +34,7 @@ class App extends Component {
 				<ul className={Styles.menu}>
 					{_.map([
 						{name:"Home",path:PATH_ROOT},
-						/*<INJECT:CONFIG_MENU*/	
+						/*INJECT:CONFIG_MENU*/	
 					],(route, index) => {
 						return <li key={index}><ButtonComponent onClick={this.onNavigateTo} content={route.name} data-route-path={route.path} /></li>
 					})}
@@ -43,7 +43,7 @@ class App extends Component {
 					<Route exact path={PATH_ROOT} render={() => {
 						return <h1>App</h1>
 					}} />
-					{/*<INJECT:CONFIG_ROUTE*/}
+					{/*INJECT:CONFIG_ROUTE*/}
 					<Route render={() => this.props.onNavigateTo( PATH_ROOT ) } />
 				</Switch>
 			</div>
