@@ -12,8 +12,6 @@ import configureStore from './core/store';
 import configureServer from './core/server';
 import * as serviceWorker from './core/serviceWorker';
 
-import moment from 'moment';
-
 import App from './containers/AppContainer';
 
 const history = configureHistory();
@@ -25,7 +23,7 @@ const store = configureStore({
 	}
 });
 
-console.log('app started...', moment().format('HH:mm:ss') );
+console.log('app started...', new Date().toUTCString() );
 
 const rootEl = document.getElementById('root');
 const render = Component => {
