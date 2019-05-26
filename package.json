@@ -17,5 +17,8 @@
   },
   "scripts": {
     "release": "project-release"
+  },
+  "bin" : {
+    "generator" : "./bin/generator.js"
   }
 }
