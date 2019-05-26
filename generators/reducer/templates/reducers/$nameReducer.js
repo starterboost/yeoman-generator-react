@@ -3,7 +3,10 @@ import {
 } from '../actions/<%= name %>Action';
 
 import {
-	CreateReducer, AddItem, UpdateItem, RemoveItem
+	CreateReducer, 
+	//AddItem, 
+	//UpdateItem, 
+	//RemoveItem
 } from '../utils/ReducerUtil';
 
 const INITIAL_STATE = {

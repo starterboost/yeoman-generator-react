@@ -1,61 +1,80 @@
+import { hot } from 'react-hot-loader/root';
 /*eslint-env es6*/
-import React, { Component } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-import Styles from './styles/AppComponent.module.scss';
+import {Component} from '@starterboost/react-utilities/components';
+
+import Styles from './styles/AppComponent.styl';
+
+import {Button} from 'semantic-ui-react';
 
 import {
 	PATH_ROOT,
 	/*INJECT:IMPORT_ROUTE_PATH*/
 } from '../constants/PathConstants';
 
-import ButtonComponent from './ButtonComponent';
+import LoginContainer from '../containers/LoginContainer';
+import LogoutContainer from '../containers/LogoutContainer';
 /*INJECT:IMPORT_COMPONENT*/
 
-class App extends Component {
-	
-	onNavigateTo = ( evt, props ) => {
-		this.props.onNavigateTo( props['data-route-path'] );
+console.log( new Date() );
+
+class AppComponent extends Component{
+
+	onNavigateTo( path, props ){
+		setTimeout(() => {
+			if(_.isString( path )){
+				this.props.onNavigateTo( path );
+			}else{
+				this.props.onNavigateTo( props['data-route-path'] );
+			}
+		},1);
 	}
 	
-	/**
-	 * @memberOf App
-	 * @function render
-	 * @returns {JSXElement}
-	 */
-	render() {
-		const {router} = this.props;
+	componentDidMount(){
+		this.props.onMount();
+	}
+	//const {location} = router;
+	render(){
+		const {router,historyLength,onBack} = this.props;
 		const {location} = router;
 		return (
 			<div className={Styles.container}>
 				<ul className={Styles.menu}>
+					{historyLength > 0 && <li><Button primary inverted content='Back' icon='arrow left' onClick={onBack} /></li>}
+					
 					{_.map([
 						{name:"Home",path:PATH_ROOT},
 						/*INJECT:CONFIG_MENU*/	
 					],(route, index) => {
-						return <li key={index}><ButtonComponent onClick={this.onNavigateTo} content={route.name} data-route-path={route.path} /></li>
+						return <li key={index}><Button compact content={route.name} onClick={this.onNavigateTo} data-route-path={route.path} /></li>
 					})}
+					<li><LogoutContainer className={Styles.logout} /></li>
 				</ul>
-				<Switch location={location}>
-					<Route exact path={PATH_ROOT} render={() => {
-						return <h1>App</h1>
-					}} />
-					{/*INJECT:CONFIG_ROUTE*/}
-					<Route render={() => this.props.onNavigateTo( PATH_ROOT ) } />
-				</Switch>
+				<LoginContainer>
+					<Switch location={location}>
+						<Route exact path={PATH_ROOT} render={( route ) => {
+							return <p>Welcome</p>
+						}} />
+						{/*INJECT:CONFIG_ROUTE*/}	
+						<Route render={() => this.onNavigateTo( PATH_ROOT ) } />
+					</Switch>
+				</LoginContainer>
 			</div>
 		);
 	}
 }
 
-App.propTypes = {
-	onNavigateTo : PropTypes.func.isRequired
+AppComponent.propTypes = {
+	onNavigateTo : PropTypes.func.isRequired,
+	onBack : PropTypes.func.isRequired,
+	router : PropTypes.object.isRequired,
+	historyLength : PropTypes.number.isRequired
 }
 
-export default App;
-
-export { App, Styles as AppStyles };
-
+export default hot(AppComponent);
+export { AppComponent, Styles as AppStyles };

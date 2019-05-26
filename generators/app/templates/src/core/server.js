@@ -1,12 +1,29 @@
+const _ = require('lodash');
+const Promise = require('bluebird');
+
 const {io,feathers} = window;
 var app;
+
+function DeferredPromise( handler ){
+
+	this.promise = new Promise( ( resolve, reject ) => {
+		this.resolve = resolve;
+		this.reject = reject;
+	} );
+
+	this.trigger = () => {
+		( handler ? handler() : Promise.resolve() ).then( this.resolve, this.reject );
+	}
+}
 
 const configureServer = ( options ) => {
 	//stop being created multiple times - if big issue developer has to do a hard refresh
 	if( app ) return app;
 	
-	console.log('creating new app');
-	const {REACT_APP_SERVER_URL,REACT_APP_USERNAME,REACT_APP_PASSWORD} = options;
+	const {
+		REACT_APP_SERVER_URL
+		,REACT_APP_USERNAME,REACT_APP_PASSWORD
+	} = options;
 	//start up the feathersjs app
 	// Socket.io is exposed as the `io` global.
 	var socket = io(REACT_APP_SERVER_URL);
@@ -16,34 +33,129 @@ const configureServer = ( options ) => {
 	app.configure(feathers.socketio(socket));
 	app.configure(feathers.authentication({storage:localStorage}));
 
+	var numAuthenticationRequests = 0;
+
 	const authenticate = () => {
+		if( numAuthenticationRequests > 0 ){
+			const defer = new DeferredPromise();
+			addQuery( () => {
+				console.log('triggered deferred');
+				//trigger the deferred promise after the authentication ompletes
+				defer.trigger();
+			} )
+			return defer.promise;
+		}
+		numAuthenticationRequests++;
+		//console.log('authenticate', numAuthenticationRequests);
 		return app.authenticate()
+		//EXPECT THE USER TO LOG US IN
 		.catch( err => {
-			console.log('Logging in using local strategy');
-			return app.authenticate({
-				strategy: 'local',
-				email: REACT_APP_USERNAME,
-				password: REACT_APP_PASSWORD
-			})
+			if( REACT_APP_USERNAME && REACT_APP_PASSWORD ){
+				//login automatically
+				return app.authenticate({
+					strategy: 'local',
+					email: REACT_APP_USERNAME,
+					password: REACT_APP_PASSWORD
+				});
+			}else{
+				//re-throw this error
+				throw err;
+			}
 		} )
+		.then( 
+			() => {
+				app.emit('loggedIn');
+				numAuthenticationRequests--;
+				processQueries();
+			}, 
+			() => {
+				app.emit('loggedOut');
+				numAuthenticationRequests--;
+				//reattempt if required
+				// Promise.delay( 5000 ).then( () => {
+				// 	if( numAuthenticationRequests === 0 ){
+				// 		authenticate();
+				// 	}
+				// });
+			}
+		);
 	}
 
 	socket.on("disconnect", () => console.log("disconnect") )
 	socket.on("connect", () => {
-		initData();
-	} )
+		authenticate();
+	} );
+	
+	var queries = [];
 
-	var initialised = false;
-	function initData(){
-		authenticate()
-		.then(() => {
-			if( initialised ) return;
-			initialised = true;
+	const addQuery = ( query ) => {
+		queries.push( query );
+		//if not authenticating at the moment then call it
+		if( numAuthenticationRequests === 0 ){
+			authenticate();
+		}
+	}
+
+	const processQueries = () => {
+		//any queries that are hanging can be actioned
+		_.each( queries, query => query() );
+		//reset the queries
+		queries = [];
+	}
+
+	app.queryService = ( id ) => {
+
+		const query = ( type ) => {
+			return ( ...args ) => {
+				var iresolve, ireject;
+				//this is the promise we return back to the user
+				const promise = new Promise(( resolve, reject ) => {
+					//we hold off doing anything until our query stub is called back
+					iresolve = resolve;
+					ireject = reject;
+				});
+
+				//this is the query we add
+				addQuery(() => {
+					//now we're free to carry on
+					const service = app.service( id );
+					//call the service and map the reject and resolve methods from before
+					service[type].apply( service, args ).then( iresolve, ireject );
+				});
+
+				return promise;
+			}
+		}
+
+		return {
+			get : query('get'),
+			find: query('find'),
+			create: query('create'),
+			update: query('update'),
+			patch: query('patch'),
+			remove: query('remove')
+		}
+	}
+
+	//add simplified login/logout methods to the app
+	app.login = ( email, password ) => {
+		numAuthenticationRequests++;
+		//authenticate the user against the local strategy
+		return app.authenticate({
+			strategy: 'local',
+			email: email,
+			password: password
 		})
-		.then(() => {
-			return app.service('api/regions').find()
-			.then( console.log )
-		})
+		.then( 
+			() => {
+				numAuthenticationRequests--;
+				processQueries();
+			},
+			( err ) => {
+				numAuthenticationRequests--;
+				throw err;
+			}
+		);
 	}
 
 	return app;

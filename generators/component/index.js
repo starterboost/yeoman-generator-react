@@ -67,8 +67,8 @@ module.exports = class extends CustomGenerator {
 		);
 
 		await this.fs.copyTpl(
-			this.templatePath('components/styles/$nameComponent.module.scss'),
-			this.destinationPath(`src/components/styles/${name}Component.module.scss`),
+			this.templatePath('components/styles/$nameComponent.styl'),
+			this.destinationPath(`src/components/styles/${name}Component.styl`),
 			options
 		);
 	}

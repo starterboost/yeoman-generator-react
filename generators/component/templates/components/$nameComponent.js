@@ -1,9 +1,12 @@
-import React, {Component} from 'react';
+import { hot } from 'react-hot-loader';
+
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import {ClassNames} from '@starterboost/react-utilities/styles';
+import {Component} from '@starterboost/react-utilities/components';
 
-import Styles from './styles/<%= name %>Component.module.scss';
+import Styles from './styles/<%= name %>Component.styl';
 
 class <%= name %>Component extends Component{
 	
@@ -15,7 +18,7 @@ class <%= name %>Component extends Component{
 	 * @function componentDidMount
 	 * @returns {JSXElement}
 	 */
-	componentDidMount = () => {
+	componentDidMount(){
 		<% if( enableOnMount ) { %>this.props.onMount( this.props );<% } %>
 	}
 
@@ -24,7 +27,7 @@ class <%= name %>Component extends Component{
 	 * @function componentWillUnmount
 	 * @returns {JSXElement}
 	 */
-	componentWillUnmount = () => {
+	componentWillUnmount(){
 		<% if( enableOnUnmount ) { %>this.props.onUnmount( this.props );<% } %>
 	}
 
@@ -51,5 +54,5 @@ class <%= name %>Component extends Component{
 
 }
 
-export default <%= name %>Component;
+export default hot(module)(<%= name %>Component);
 export { <%= name %>Component,Styles as <%= name %>Styles };

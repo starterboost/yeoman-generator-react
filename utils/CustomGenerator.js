@@ -13,6 +13,8 @@ module.exports = class extends Generator {
 		var contents = await this.fs.read( pathToTarget );
 		
 		return Promise.mapSeries( tpls, async ( tpl ) => {
+			console.log( pathToTarget );
+
 			const NAME = _.kebabCase( path.basename( tpl, path.extname( tpl ) ) ).toUpperCase().replace(/\-/g,'_');
 			const markerInject = `/*INJECT:${NAME}*/`;
 			const indexMarkerStart = contents.indexOf( markerInject );

@@ -1,5 +1,3 @@
-import {showError,catchError} from './ErrorAction';
-
 /*INJECT:DEFINE_ACTION_TYPE*/
 
 /*INJECT:ACTION*/

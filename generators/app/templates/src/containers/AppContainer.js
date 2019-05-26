@@ -1,24 +1,32 @@
+import AppComponent from '../components/AppComponent';
+
 import React from 'react';
 import { connect } from 'react-redux';
 
-import AppComponent from '../components/AppComponent';
-import { navigateTo } from '../redux/actions/RouterAction';
+import { navigateTo, back } from '../redux/actions/RouterAction';
+import { PATH_ROOT } from '../constants/PathConstants';
 
 const mapStateToProps = state => {
 	return ({
 		errors: state.error,
-		router : state.router
+		router : state.router,
+		historyLength : state.history.length
 	});
 }
 
 const mapDispatchToProps = dispatch => ({
 	onMount : () => {
-
+		dispatch( navigateTo( PATH_ROOT, true ) );
 	},
 	onNavigateTo : ( routePath ) => {
 		dispatch( navigateTo( routePath ) );
+	},
+	onBack : ( routePath ) => {
+		dispatch( back() );
 	}
 });
+
+//const App = hot( AppComponent );
 
 export default connect(
 	mapStateToProps,
