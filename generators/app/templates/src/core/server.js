@@ -21,7 +21,7 @@ const configureServer = ( options ) => {
 	if( app ) return app;
 	
 	const {
-		REACT_APP_SERVER_URL
+		REACT_APP_SERVER_URL,REACT_APP_NAME
 		,REACT_APP_USERNAME,REACT_APP_PASSWORD
 	} = options;
 	//start up the feathersjs app
@@ -31,7 +31,10 @@ const configureServer = ( options ) => {
 	app = feathers();
 
 	app.configure(feathers.socketio(socket));
-	app.configure(feathers.authentication({storage:localStorage}));
+	app.configure(feathers.authentication({
+		storageKey : `${REACT_APP_NAME||'feathers'}-jwt`,
+		storage:localStorage
+	}));
 
 	var numAuthenticationRequests = 0;
 
