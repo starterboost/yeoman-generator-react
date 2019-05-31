@@ -43,7 +43,6 @@ const configureServer = ( options ) => {
 		if( numAuthenticationRequests > 0 ){
 			const defer = new DeferredPromise();
 			addQuery( () => {
-				console.log('triggered deferred');
 				//trigger the deferred promise after the authentication ompletes
 				defer.trigger();
 			} )
@@ -149,12 +148,11 @@ const configureServer = ( options ) => {
 		if( authenticated ){
 			return Promise.resolve( true );
 		}else{
-			var iresolve,ireject;
+			var iresolve;
 			//this is the promise we return back to the user
-			const promise = new Promise(( resolve,reject ) => {
+			const promise = new Promise(( resolve ) => {
 				//we hold off doing anything until our query stub is called back
 				iresolve = resolve;
-				ireject = reject;
 			});
 
 			//only allow the query 5 seconds to complete
@@ -170,7 +168,7 @@ const configureServer = ( options ) => {
 				if( iresolve ){
 					iresolve( authenticated );
 				}
-				iresolve = ireject = null;
+				iresolve = null;
 			});
 	
 			return promise;
