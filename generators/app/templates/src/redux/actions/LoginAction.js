@@ -37,14 +37,14 @@ export const endLogin = ( email, password ) => {
 
 export const initLogin = () => {
 	return ( dispatch, getState, arg ) => {
-		
-		arg.server.authenticate()
-		.then( () => {
-			dispatch( loginSuccess() );
-		} )
-		.catch( () => {
-			dispatch( loginFail() );
-		} );
+		arg.server.queryLoginStatus()
+		.then( status => {
+			if( status ){
+				dispatch( loginSuccess() );
+			}else{
+				dispatch( loginFail() );
+			}
+		});
 	} 
 }
 

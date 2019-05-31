@@ -37,6 +37,7 @@ const configureServer = ( options ) => {
 	}));
 
 	var numAuthenticationRequests = 0;
+	var authenticated = false;
 
 	const authenticate = () => {
 		if( numAuthenticationRequests > 0 ){
@@ -49,11 +50,13 @@ const configureServer = ( options ) => {
 			return defer.promise;
 		}
 		numAuthenticationRequests++;
+		authenticated = authenticated || false;
 		//console.log('authenticate', numAuthenticationRequests);
 		return app.authenticate()
 		//EXPECT THE USER TO LOG US IN
 		.catch( err => {
 			if( REACT_APP_USERNAME && REACT_APP_PASSWORD ){
+				console.log('Login using supplied props')
 				//login automatically
 				return app.authenticate({
 					strategy: 'local',
@@ -65,13 +68,15 @@ const configureServer = ( options ) => {
 				throw err;
 			}
 		} )
-		.then( 
+		.then(
 			() => {
+				authenticated = true;
 				app.emit('loggedIn');
 				numAuthenticationRequests--;
 				processQueries();
 			}, 
 			() => {
+				authenticated = false;
 				app.emit('loggedOut');
 				numAuthenticationRequests--;
 				//reattempt if required
@@ -137,6 +142,38 @@ const configureServer = ( options ) => {
 			update: query('update'),
 			patch: query('patch'),
 			remove: query('remove')
+		}
+	}
+
+	app.queryLoginStatus = () => {
+		if( authenticated ){
+			return Promise.resolve( true );
+		}else{
+			var iresolve,ireject;
+			//this is the promise we return back to the user
+			const promise = new Promise(( resolve,reject ) => {
+				//we hold off doing anything until our query stub is called back
+				iresolve = resolve;
+				ireject = reject;
+			});
+
+			//only allow the query 5 seconds to complete
+			setTimeout( () => {
+				if( iresolve ){
+					iresolve( false );
+				}
+				iresolve = ireject = null;
+			}, 5000 );
+			
+			//this is the query we add
+			addQuery(() => {
+				if( iresolve ){
+					iresolve( authenticated );
+				}
+				iresolve = ireject = null;
+			});
+	
+			return promise;
 		}
 	}
 
