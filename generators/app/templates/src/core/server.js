@@ -160,7 +160,7 @@ const configureServer = ( options ) => {
 				if( iresolve ){
 					iresolve( false );
 				}
-				iresolve = ireject = null;
+				iresolve = null;
 			}, 5000 );
 			
 			//this is the query we add
