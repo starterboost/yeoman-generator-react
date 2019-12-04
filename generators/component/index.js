@@ -28,6 +28,12 @@ module.exports = class extends CustomGenerator {
 			},
 			{
 				type: "confirm",
+				name: "enableContainer",
+				message: "Create Container",
+				default: true
+			},
+			{
+				type: "confirm",
 				name: "enableOnMount",
 				message: "Enable onMount",
 				default: false
@@ -47,18 +53,24 @@ module.exports = class extends CustomGenerator {
 			answers, 
 			this.options ), [
 			'name',
+			'enableContainer',
 			'enableOnMount',
 			'enableOnUnmount',
 			'reducerName'
 		] );
 
-		const {name} = options;
+		const {name, enableContainer} = options;
 
-		await this.fs.copyTpl(
-			this.templatePath('containers/$nameContainer.js'),
-			this.destinationPath(`src/containers/${name}Container.js`),
-			options
-		);
+		if( enableContainer ){
+			await this.fs.copyTpl(
+				this.templatePath('containers/$nameContainer.js'),
+				this.destinationPath(`src/containers/${name}Container.js`),
+				options
+			);
+		}else{
+			options.enableOnMount = false;
+			options.enableOnUnmount = false;
+		}
 		
 		await this.fs.copyTpl(
 			this.templatePath('components/$nameComponent.js'),
