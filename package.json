@@ -1,7 +1,7 @@
 {
   "name": "generator-starterboost-react",
   "description": "StarterBoost flavour of React App",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "main": "index.js",
   "license": "MIT",
   "files": [
