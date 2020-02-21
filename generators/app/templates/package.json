@@ -2,8 +2,7 @@
   "name": "<%= name %>",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@craco/craco": "^5.2.1",
     "@hot-loader/react-dom": "^16.8.6",
