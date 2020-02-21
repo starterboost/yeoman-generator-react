@@ -15,6 +15,7 @@ module.exports = class extends CustomGenerator {
 	async prompting() {
 		//if no package then we're not in an app - ask to create one
 		if( !this.fs.exists( path.resolve( this.destinationRoot(), '.yo-rc.json' ) ) ){
+			console.log( require("../../package.json").version );
 			//get a list of generators available
 			const answers = await this.prompt([
 				{
